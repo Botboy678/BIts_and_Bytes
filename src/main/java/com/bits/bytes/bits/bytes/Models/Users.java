@@ -1,4 +1,6 @@
 package com.bits.bytes.bits.bytes.Models;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +24,7 @@ public class Users {
     private String email;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password_hash;
 
     @CreationTimestamp
@@ -37,6 +40,7 @@ public class Users {
     private Integer ability_points;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonBackReference
     private Profiles profile;
 
     @OneToMany(mappedBy = "userId")
