@@ -36,8 +36,6 @@ public class UserServices {
 
     // registering a new user
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-
-
     public void Register(Users user) {
         // hash the password
         user.setPassword_hash(encoder.encode(user.getPassword_hash()));
@@ -75,7 +73,15 @@ public class UserServices {
         userRepo.save(principalUser);
     }
 
-    //same issue here we want to update an existing profile and not create a new one!!
+    public void deleteUserProject(String title) {
+        Users principalUser = myCurrentUser.getPrincipalUser();
+        Projects projToDelete = projectRepo.findByTitleAndUserId(title, principalUser);
+        Set<Projects> projects = principalUser.getProjects();
+        projects.remove(projToDelete);
+        projectRepo.delete(projToDelete);
+        userRepo.save(principalUser);
+    }
+
     public void updateUserProfile(Profiles profile) {
         Users principalUser = myCurrentUser.getPrincipalUser();
         Profiles updatedProfile = principalUser.getProfile();

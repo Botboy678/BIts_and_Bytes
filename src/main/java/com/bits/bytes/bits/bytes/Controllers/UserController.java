@@ -48,8 +48,9 @@ public class UserController {
     }
 
 
-//    @DeleteMapping("/project/delete{title}")
-//    public String DeleteProject(@PathVariable String title) {
-//
-//    }
+    @DeleteMapping("/project/delete/{title}")
+    public String DeleteProject(@PathVariable String title) {
+        userServices.deleteUserProject(title);
+        return "Project Deleted Twin!";
+    }
 }
