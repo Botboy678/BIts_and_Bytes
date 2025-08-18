@@ -1,4 +1,5 @@
 package com.bits.bytes.bits.bytes.Models;
+import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.FriendsId;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;

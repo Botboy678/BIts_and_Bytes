@@ -1,4 +1,4 @@
-package com.bits.bytes.bits.bytes.Models;
+package com.bits.bytes.bits.bytes.Models.MiscellaneousModels;
 import lombok.Data;
 import java.io.Serializable;
 

@@ -1,7 +1,9 @@
 package com.bits.bytes.bits.bytes.Models;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
 import lombok.Getter;
+
 import lombok.Setter;
 
 
@@ -11,8 +13,8 @@ public class Profiles {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer profile_id;
 
-    @OneToOne @JoinColumn(name = "users_user_id")
-    @JsonManagedReference
+    @OneToOne(cascade = CascadeType.ALL) @JoinColumn(name = "users_user_id")
+    @JsonManagedReference(value = "user-profile")
     private Users user;
 
 

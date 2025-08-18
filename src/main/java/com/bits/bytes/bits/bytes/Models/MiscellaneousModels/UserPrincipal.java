@@ -1,4 +1,5 @@
-package com.bits.bytes.bits.bytes.Models;
+package com.bits.bytes.bits.bytes.Models.MiscellaneousModels;
+import com.bits.bytes.bits.bytes.Models.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

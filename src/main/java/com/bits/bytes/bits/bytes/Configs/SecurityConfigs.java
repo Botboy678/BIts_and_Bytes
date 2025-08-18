@@ -1,5 +1,5 @@
 package com.bits.bytes.bits.bytes.Configs;
-import com.bits.bytes.bits.bytes.Models.MyUserDetailsService;
+import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,11 +24,13 @@ public class SecurityConfigs {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.PUT, "/login").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/register").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {

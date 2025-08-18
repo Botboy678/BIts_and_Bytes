@@ -1,4 +1,4 @@
-package com.bits.bytes.bits.bytes.Models;
+package com.bits.bytes.bits.bytes.Models.MiscellaneousModels;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 

@@ -11,12 +11,11 @@ public class LoginController {
     @Autowired
     UserServices userServices;
 
-    @PutMapping("/login")
+    @PutMapping("/register")
     public String registerUser(@RequestBody Users user) {
         userServices.Register(user);
-        return "Success";
+        return "ok";
     }
-
 
 
 //    @GetMapping("/csrf-token")

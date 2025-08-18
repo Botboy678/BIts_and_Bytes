@@ -1,4 +1,6 @@
 package com.bits.bytes.bits.bytes.Models;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +16,8 @@ public class Projects {
     private Integer project_id;
 
     @ManyToOne @JoinColumn(name = "user_id", nullable = false)
+    @JsonManagedReference
+    @JsonIgnore
     private Users userId;
 
     @Column(nullable = false)
@@ -26,7 +30,7 @@ public class Projects {
     @CreationTimestamp
     private LocalDateTime created_at;
 
-    @OneToMany(mappedBy = "projectId")
+    @OneToMany(mappedBy = "projectId", cascade = CascadeType.ALL)
     private Set<ProjectComments> comments;
 
 }

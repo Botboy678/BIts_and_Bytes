@@ -1,4 +1,5 @@
-package com.bits.bytes.bits.bytes.Models;
+package com.bits.bytes.bits.bytes.Models.MiscellaneousModels;
+import com.bits.bytes.bits.bytes.Models.Users;
 import com.bits.bytes.bits.bytes.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
