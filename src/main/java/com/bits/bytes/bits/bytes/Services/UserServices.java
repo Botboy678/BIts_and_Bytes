@@ -4,9 +4,8 @@ import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.MyCurrentUser;
 import com.bits.bytes.bits.bytes.Models.Profiles;
 import com.bits.bytes.bits.bytes.Models.Projects;
 import com.bits.bytes.bits.bytes.Models.Users;
-import com.bits.bytes.bits.bytes.Repo.ProfilesRepo;
-import com.bits.bytes.bits.bytes.Repo.ProjectRepo;
-import com.bits.bytes.bits.bytes.Repo.UserRepo;
+import com.bits.bytes.bits.bytes.Repo.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Set;
 
 @Service
+@Transactional
 public class UserServices {
 
     @Autowired
@@ -28,6 +28,16 @@ public class UserServices {
 
     @Autowired
     MyCurrentUser myCurrentUser;
+
+    @Autowired
+    BugReportsRepo bugReportsRepo;
+
+    @Autowired
+    DeveloperBlogCommentsRepo developerBlogCommentsRepo;
+
+    @Autowired
+    ProjectCommentsRepo projectCommentsRepo;
+
 
     public Users FindUser(String username) {
         Users user = userRepo.findByUsername(username);
@@ -85,6 +95,11 @@ public class UserServices {
     public void updateUserProfile(Profiles profile) {
         Users principalUser = myCurrentUser.getPrincipalUser();
         Profiles updatedProfile = principalUser.getProfile();
+        if(updatedProfile == null) {
+            updatedProfile = new Profiles();
+            updatedProfile.setUser(principalUser);
+        }
+
         //This can be put into a POJO for sure do later!!!
         String url = "https://leetcode-api-faisalshohag.vercel.app/" + profile.getLeetcode_username();
         // RestTemplate used to make API calls
@@ -105,4 +120,17 @@ public class UserServices {
     }
 
 
+    public String deleteUserProfile(String username) {
+        Users principalUser = myCurrentUser.getPrincipalUser();
+        if(username.equals(principalUser.getUsername())) {
+            bugReportsRepo.deleteAllByUserId(principalUser);
+            developerBlogCommentsRepo.deleteAllByUserId(principalUser);
+            projectCommentsRepo.deleteAllByUserId(principalUser);
+            projectRepo.deleteAllByUserId(principalUser);
+            profilesRepo.deleteByUser(principalUser);
+            userRepo.delete(principalUser);
+        } else return "Wrong UserName Brah!";
+
+        return "Profile deleted Twin on Dih!";
+    }
 }

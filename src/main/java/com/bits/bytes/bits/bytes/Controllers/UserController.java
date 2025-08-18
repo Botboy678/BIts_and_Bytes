@@ -29,6 +29,12 @@ public class UserController {
         return "Profile Updated Twin";
     }
 
+    @RequestMapping(value = "/profile/delete/{username}", method = RequestMethod.DELETE)
+    public String DeleteProfile(@PathVariable String username) {
+        String result = userServices.deleteUserProfile(username);
+        return result;
+    }
+
     @GetMapping("/projects")
     public Set<Projects> userProjects(Principal principal) {
         Users user = userServices.FindUser(principal.getName());
