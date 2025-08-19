@@ -5,8 +5,11 @@ import com.bits.bytes.bits.bytes.Models.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Set;
+
 @Repository
 public interface ProjectRepo extends JpaRepository<Projects, Integer> {
+    Set<Projects> findAllByTitle(String title);
     Projects findByTitleAndUserId(String title, Users user);
     void deleteAllByUserId(Users user);
 }

@@ -1,4 +1,5 @@
 package com.bits.bytes.bits.bytes.Models;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,9 +14,12 @@ public class ProjectComments {
     private Integer comment_id;
 
     @ManyToOne @JoinColumn(name = "user_id")
+    @JsonBackReference(value = "user_who_commented")
     private Users userId;
 
-    @ManyToOne @JoinColumn(name = "project_id")
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    @JsonBackReference(value = "comments")
     private Projects projectId;
 
     private String Content;

@@ -2,6 +2,7 @@ package com.bits.bytes.bits.bytes.Services;
 import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.LeetCodeProfile;
 import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.MyCurrentUser;
 import com.bits.bytes.bits.bytes.Models.Profiles;
+import com.bits.bytes.bits.bytes.Models.ProjectComments;
 import com.bits.bytes.bits.bytes.Models.Projects;
 import com.bits.bytes.bits.bytes.Models.Users;
 import com.bits.bytes.bits.bytes.Repo.*;
@@ -69,7 +70,6 @@ public class UserServices {
         userRepo.save(principalUser);
     }
 
-
     public void updateUserProjects(Projects project, String title) {
 
         Users principalUser = myCurrentUser.getPrincipalUser();
@@ -119,7 +119,6 @@ public class UserServices {
         userRepo.save(principalUser);
     }
 
-
     public String deleteUserProfile(String username) {
         Users principalUser = myCurrentUser.getPrincipalUser();
         if(username.equals(principalUser.getUsername())) {
@@ -132,5 +131,45 @@ public class UserServices {
         } else return "Wrong UserName Brah!";
 
         return "Profile deleted Twin on Dih!";
+    }
+
+
+    //I'm adding the project comment based on the title and username of
+    //who owns that project, this is to avoid errors bc multiple users
+    //could have a project with the same name
+    //So when I'm doing the frontend I can pull the username attached to the project
+    //the user wants to comment on
+    //Like "Project 1" by "John doe" I pull "John doe" and tag it on to send here to backend
+    public String addCommentToProject(String title, ProjectComments comment, String username){
+        Users principalUser = myCurrentUser.getPrincipalUser();
+        ProjectComments newComment = new ProjectComments();
+
+        //Load all projects by that name
+        Set<Projects> projectsSet = projectRepo.findAllByTitle(title);
+
+        //The project the user wants to comment on
+        Projects projectForComment = null;
+        for(Projects project : projectsSet) {
+            Users user = project.getUserId();
+            if(user.getUsername().equals(username)) projectForComment = project;
+        }
+        if(projectForComment == null) return "Could not find Project Twin";
+
+        //Once the project has been found
+        //Get all the comments of project that is been commented on
+        Set<ProjectComments> projectsCommentSet = projectForComment.getComments();
+        //Loading all the comments of the principal users
+        Set<ProjectComments> PrincipalUserprojectComments = principalUser.getComments();
+
+        newComment.setProjectId(projectForComment);
+        newComment.setUserId(principalUser);
+        newComment.setContent(comment.getContent());
+        PrincipalUserprojectComments.add(newComment);
+        projectsCommentSet.add(newComment);
+
+        projectCommentsRepo.save(newComment);
+        projectRepo.save(projectForComment);
+        userRepo.save(principalUser);
+        return "Comment added Twin";
     }
 }

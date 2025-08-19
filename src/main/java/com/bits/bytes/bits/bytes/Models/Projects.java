@@ -16,7 +16,7 @@ public class Projects {
     private Integer project_id;
 
     @ManyToOne @JoinColumn(name = "user_id", nullable = false)
-    @JsonManagedReference
+    @JsonManagedReference(value = "project")
     @JsonIgnore
     private Users userId;
 
@@ -31,6 +31,7 @@ public class Projects {
     private LocalDateTime created_at;
 
     @OneToMany(mappedBy = "projectId", cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "comments")
     private Set<ProjectComments> comments;
 
 }

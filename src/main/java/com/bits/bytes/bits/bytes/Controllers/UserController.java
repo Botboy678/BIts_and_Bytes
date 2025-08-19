@@ -1,5 +1,6 @@
 package com.bits.bytes.bits.bytes.Controllers;
 import com.bits.bytes.bits.bytes.Models.Profiles;
+import com.bits.bytes.bits.bytes.Models.ProjectComments;
 import com.bits.bytes.bits.bytes.Models.Projects;
 import com.bits.bytes.bits.bytes.Models.Users;
 import com.bits.bytes.bits.bytes.Services.UserServices;
@@ -53,6 +54,11 @@ public class UserController {
         return "Project Updated Twin";
     }
 
+    @PutMapping("/project/comment/{title}/{username}")
+    public String addProjectComment(@RequestBody ProjectComments comments, @PathVariable String username, @PathVariable String title) {
+        String result = userServices.addCommentToProject(title,comments, username);
+        return result;
+    }
 
     @DeleteMapping("/project/delete/{title}")
     public String DeleteProject(@PathVariable String title) {

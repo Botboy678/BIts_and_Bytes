@@ -1,5 +1,6 @@
 package com.bits.bytes.bits.bytes.Models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -49,10 +50,11 @@ public class Users {
     private Set<Friends> ReceivedFriendRequests;
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonBackReference(value = "project")
     private Set<Projects> projects;
 
     @OneToMany(mappedBy = "userId")
+    @JsonManagedReference(value = "user_who_commented")
     private Set<ProjectComments> comments;
 
     @OneToMany(mappedBy = "userId")
