@@ -5,7 +5,10 @@ import com.bits.bytes.bits.bytes.Models.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Set;
+
 @Repository
 public interface BugReportsRepo extends JpaRepository<BugReports, Integer> {
     void deleteAllByUserId(Users user);
+    Set<BugReports> findAllByUserId(Users user);
 }

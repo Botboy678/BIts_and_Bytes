@@ -1,8 +1,5 @@
 package com.bits.bytes.bits.bytes.Controllers;
-import com.bits.bytes.bits.bytes.Models.Profiles;
-import com.bits.bytes.bits.bytes.Models.ProjectComments;
-import com.bits.bytes.bits.bytes.Models.Projects;
-import com.bits.bytes.bits.bytes.Models.Users;
+import com.bits.bytes.bits.bytes.Models.*;
 import com.bits.bytes.bits.bytes.Services.UserServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +17,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public Profiles userProfile(Principal principal) {
-        Users user = userServices.FindUser(principal.getName());
+        Users user = userServices.findUser(principal.getName());
         return user.getProfile();
     }
 
@@ -38,7 +35,7 @@ public class UserController {
 
     @GetMapping("/projects")
     public Set<Projects> userProjects(Principal principal) {
-        Users user = userServices.FindUser(principal.getName());
+        Users user = userServices.findUser(principal.getName());
         return user.getProjects();
     }
 
@@ -54,9 +51,9 @@ public class UserController {
         return "Project Updated Twin";
     }
 
-    @PutMapping("/project/comment/{title}/{username}")
-    public String addProjectComment(@RequestBody ProjectComments comments, @PathVariable String username, @PathVariable String title) {
-        String result = userServices.addCommentToProject(title,comments, username);
+    @PutMapping("/project/comment/{title}/{projectOwner}")
+    public String addProjectComment(@RequestBody ProjectComments comments, @PathVariable String projectOwner, @PathVariable String title) {
+        String result = userServices.addCommentToProject(title,comments, projectOwner);
         return result;
     }
 
@@ -65,4 +62,11 @@ public class UserController {
         userServices.deleteUserProject(title);
         return "Project Deleted Twin!";
     }
+
+    @PutMapping("/bugReports/add")
+    public String addBugReport(@RequestBody BugReports bugReport) {
+        userServices.addBugReport(bugReport);
+        return "Bug Report Added Twin";
+    }
+
 }

@@ -1,10 +1,12 @@
 package com.bits.bytes.bits.bytes.Models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +26,7 @@ public class Users {
     private String email;
 
     @Column(nullable = false)
-//    @JsonIgnore
+    @JsonIgnore
     private String password_hash;
 
     @CreationTimestamp
@@ -49,15 +51,36 @@ public class Users {
     @OneToMany(mappedBy = "friendUserId")
     private Set<Friends> ReceivedFriendRequests;
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference(value = "project")
     private Set<Projects> projects;
 
-    @OneToMany(mappedBy = "userId")
+    public void addProject(Projects project, Users principalUser) {
+        Projects newProject = new Projects();
+        newProject.setUserId(principalUser);
+        newProject.setTitle(project.getTitle());
+        newProject.setDescription(project.getDescription());
+        newProject.setGithub_repo_url(project.getGithub_repo_url());
+        projects.add(newProject);
+    }
+
+    public void deleteProject(Projects project) {
+        projects.remove(project);
+    }
+
+    public void updateProject(Projects updatedProject, Users principalUser, Projects projectContents) {
+        updatedProject.setUserId(principalUser);
+        updatedProject.setTitle(projectContents.getTitle());
+        updatedProject.setDescription(projectContents.getDescription());
+        updatedProject.setGithub_repo_url(projectContents.getGithub_repo_url());
+    }
+
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
     @JsonManagedReference(value = "user_who_commented")
     private Set<ProjectComments> comments;
 
     @OneToMany(mappedBy = "userId")
+    @JsonManagedReference(value = "bug_report")
     private Set<BugReports> reports;
 
     @OneToMany(mappedBy = "userId")
