@@ -31,7 +31,7 @@ public class Projects {
     private LocalDateTime created_at;
 
 
-    @OneToMany(mappedBy = "projectId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "projectId", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "comments")
     private Set<ProjectComments> comments;
 

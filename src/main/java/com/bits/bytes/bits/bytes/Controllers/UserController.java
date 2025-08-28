@@ -1,6 +1,11 @@
 package com.bits.bytes.bits.bytes.Controllers;
+import com.bits.bytes.bits.bytes.DTOs.BugReportsDTO;
 import com.bits.bytes.bits.bytes.Models.*;
 import com.bits.bytes.bits.bytes.Services.UserServices;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -10,63 +15,30 @@ import java.util.Set;
 @RequestMapping("/user")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     UserServices userServices;
     UserController(UserServices userServices) {
         this.userServices = userServices;
     }
 
     @GetMapping("/profile")
-    public Profiles userProfile(Principal principal) {
+    public ResponseEntity<Profiles> userProfile(Principal principal) {
         Users user = userServices.findUser(principal.getName());
-        return user.getProfile();
-    }
-
-    @PostMapping("/profile/update")
-    public String updateProfile(@RequestBody Profiles profile) {
-        userServices.updateUserProfile(profile);
-        return "Profile Updated Twin";
-    }
-
-    @RequestMapping(value = "/profile/delete/{username}", method = RequestMethod.DELETE)
-    public String DeleteProfile(@PathVariable String username) {
-        String result = userServices.deleteUserProfile(username);
-        return result;
+        logger.info("Successfully returned user profile");
+        return new ResponseEntity<>(user.getProfile(), HttpStatus.OK);
     }
 
     @GetMapping("/projects")
-    public Set<Projects> userProjects(Principal principal) {
-        Users user = userServices.findUser(principal.getName());
-        return user.getProjects();
-    }
-
-    @PutMapping("/project/add")
-    public String addProject(@RequestBody Projects project) {
-        userServices.addUserProjects(project);
-        return "Project added Twin";
-    }
-
-    @PostMapping("/project/update/{title}")
-    public String UpdateProjects(@RequestBody Projects project, @PathVariable String title) {
-        userServices.updateUserProjects(project, title);
-        return "Project Updated Twin";
-    }
-
-    @PutMapping("/project/comment/{title}/{projectOwner}")
-    public String addProjectComment(@RequestBody ProjectComments comments, @PathVariable String projectOwner, @PathVariable String title) {
-        String result = userServices.addCommentToProject(title,comments, projectOwner);
-        return result;
-    }
-
-    @DeleteMapping("/project/delete/{title}")
-    public String DeleteProject(@PathVariable String title) {
-        userServices.deleteUserProject(title);
-        return "Project Deleted Twin!";
+    public ResponseEntity<Set<Projects>> userProjects(Principal principal) {
+        return new ResponseEntity<>(userServices.findUser(principal.getName()).getProjects(), HttpStatus.OK);
     }
 
     @PutMapping("/bugReports/add")
-    public String addBugReport(@RequestBody BugReports bugReport) {
+    public ResponseEntity<String> addBugReport(@RequestBody BugReportsDTO bugReport) {
         userServices.addBugReport(bugReport);
-        return "Bug Report Added Twin";
+        logger.info("Successfully added Bug Report");
+        return new ResponseEntity<>("Bug Report Added Twin", HttpStatus.ACCEPTED);
     }
 
 }

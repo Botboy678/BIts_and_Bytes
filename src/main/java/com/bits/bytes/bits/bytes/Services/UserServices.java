@@ -1,15 +1,15 @@
 package com.bits.bytes.bits.bytes.Services;
+import com.bits.bytes.bits.bytes.DTOs.*;
 import com.bits.bytes.bits.bytes.Models.*;
-import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.LeetCodeProfile;
 import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.MyCurrentUser;
 import com.bits.bytes.bits.bytes.Repo.*;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.Set;
 
 @Service
 @Transactional
@@ -36,21 +36,26 @@ public class UserServices {
     @Autowired
     ProjectCommentsRepo projectCommentsRepo;
 
+    @Autowired
+    BCryptPasswordEncoder encoder;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserServices.class);
+
 
     public Users findUser(String username) {
         Users user = userRepo.findByUsername(username);
         return user;
     }
 
-    // registering a new user
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-    public void Register(Users user) {
-        // hash the password
-        user.setPassword_hash(encoder.encode(user.getPassword_hash()));
+    public void Register(UsersDTO usersDTO) {
+        Users user = new Users();
+        user.setUsername(usersDTO.getUsername());
+        user.setEmail(usersDTO.getEmail());
+        user.setPassword_hash(encoder.encode(usersDTO.getPassword()));
         userRepo.save(user);
     }
 
-    public void addUserProjects(Projects project) {
+    public void addUserProjects(ProjectsDTO project) {
         Users principalUser = myCurrentUser.getPrincipalUser();
         principalUser.addProject(project, principalUser);
         userRepo.save(principalUser);
@@ -63,7 +68,7 @@ public class UserServices {
         userRepo.save(principalUser);
     }
 
-    public void updateUserProjects(Projects projectContents, String title) {
+    public void updateUserProjects(ProjectsDTO projectContents, String title) {
         Users principalUser = myCurrentUser.getPrincipalUser();
         Projects projectToUpdate = projectRepo.findByTitleAndUserId(title, principalUser);
         principalUser.updateProject(projectToUpdate, principalUser, projectContents);
@@ -76,7 +81,7 @@ public class UserServices {
     //So when I'm doing the frontend I can pull the username attached to the project
     //the user wants to comment on
     //Like "Project 1" by "John doe" I pull "John doe" and tag it on to send here to backend
-    public String addCommentToProject(String title, ProjectComments comment, String projectOwner) {
+    public String addCommentToProject(String title, ProjectCommentsDTO comment, String projectOwner) {
         Users principalUser = myCurrentUser.getPrincipalUser();
 
         // Find project directly by title + owner
@@ -97,60 +102,47 @@ public class UserServices {
         // Attach to project
         projectForComment.getComments().add(newComment);
 
-        projectRepo.save(projectForComment);
+        userRepo.save(principalUser);
 
         return "Comment added Twin";
     }
 
-    public void updateUserProfile(Profiles profile) {
+    public void updateUserProfile(ProfilesDTO profile) {
         Users principalUser = myCurrentUser.getPrincipalUser();
-        Profiles updatedProfile = principalUser.getProfile();
-        if(updatedProfile == null) {
-            updatedProfile = new Profiles();
-            updatedProfile.setUser(principalUser);
+        try {
+            principalUser.updateProfile(profile, principalUser);
+            logger.info("Successfully updated user profile");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("Could not update User Profile!", e);
         }
-
-        //This can be put into a POJO for sure do later!!!
-        String url = "https://leetcode-api-faisalshohag.vercel.app/" + profile.getLeetcode_username();
-        // RestTemplate used to make API calls
-        RestTemplate restTemplate = new RestTemplate();
-        // getForObject used to make a get request to my url
-        // and then populates my chosen POJO
-        LeetCodeProfile leetCodeData = restTemplate.getForObject(url, LeetCodeProfile.class);
-
-        updatedProfile.setLeetcode_problems_solved(leetCodeData.getTotalSolved());
-        updatedProfile.setGithub_url(profile.getGithub_url());
-        updatedProfile.setProfile_photo_url(profile.getProfile_photo_url());
-        updatedProfile.setLeetcode_username(profile.getLeetcode_username());
-        updatedProfile.setLinkedin_url(profile.getLinkedin_url());
-
-        principalUser.setProfile(updatedProfile);
-        profilesRepo.save(updatedProfile);
         userRepo.save(principalUser);
     }
 
-    public String deleteUserProfile(String username) {
+    // A part of me was thinking of naming this "dihlete" 🥀
+    public String deleteUser(String username) {
         Users principalUser = myCurrentUser.getPrincipalUser();
         if(username.equals(principalUser.getUsername())) {
-            bugReportsRepo.deleteAllByUserId(principalUser);
-            developerBlogCommentsRepo.deleteAllByUserId(principalUser);
-            projectCommentsRepo.deleteAllByUserId(principalUser);
-            projectRepo.deleteAllByUserId(principalUser);
-            profilesRepo.deleteByUser(principalUser);
-            userRepo.delete(principalUser);
-        } else return "Wrong UserName Brah!";
-
+            try {
+                userRepo.delete(principalUser);
+                logger.info("Successfully deleted user profile");
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error("Could not delete User Profile!", e);
+            }
+        }
         return "Profile deleted Twin on Dih!";
     }
 
-    public void addBugReport(BugReports bugReport) {
+    public void addBugReport(BugReportsDTO bugReport) {
         Users principalUser = myCurrentUser.getPrincipalUser();
-
-        BugReports newBugReport = new BugReports();
-        newBugReport.setUserId(principalUser);
-        newBugReport.setDescription(bugReport.getDescription());
-        newBugReport.setStatus(bugReport.getStatus());
-
-        bugReportsRepo.save(newBugReport);
+        try {
+            principalUser.addBugReport(principalUser, bugReport);
+            logger.info("Successfully added Bug Report!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("Could not add Bug Report!", e);
+        }
+        userRepo.save(principalUser);
     }
 }

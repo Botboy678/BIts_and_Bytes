@@ -1,4 +1,8 @@
 package com.bits.bytes.bits.bytes.Models;
+import com.bits.bytes.bits.bytes.DTOs.BugReportsDTO;
+import com.bits.bytes.bits.bytes.DTOs.ProfilesDTO;
+import com.bits.bytes.bits.bytes.DTOs.ProjectsDTO;
+import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.LeetCodeProfile;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -6,6 +10,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,6 +50,26 @@ public class Users {
     @JsonBackReference(value = "user-profile")
     private Profiles profile;
 
+    public void updateProfile(ProfilesDTO profile, Users principalUser) {
+        //Load User Profile or create a new one if null
+        Profiles profileToUpdate = principalUser.getProfile() == null ? new Profiles() : principalUser.getProfile();
+        profileToUpdate.setUser(principalUser);
+
+        String url = "https://leetcode-api-faisalshohag.vercel.app/" + profile.getLeetcode_username();
+        // RestTemplate used to make API calls
+        RestTemplate restTemplate = new RestTemplate();
+        // getForObject used to make a get request to my url
+        // and then populates my chosen POJO
+        LeetCodeProfile leetCodeData = restTemplate.getForObject(url, LeetCodeProfile.class);
+
+        profileToUpdate.setLeetcode_problems_solved(leetCodeData.getTotalSolved());
+        profileToUpdate.setGithub_url(profile.getGithub_url());
+        profileToUpdate.setProfile_photo_url(profile.getProfile_photo_url());
+        profileToUpdate.setLeetcode_username(profile.getLeetcode_username());
+        profileToUpdate.setLinkedin_url(profile.getLinkedin_url());
+        principalUser.setProfile(profileToUpdate);
+    }
+
     @OneToMany(mappedBy = "userId")
     private Set<Friends> SentFriendRequests;
 
@@ -55,7 +80,7 @@ public class Users {
     @JsonBackReference(value = "project")
     private Set<Projects> projects;
 
-    public void addProject(Projects project, Users principalUser) {
+    public void addProject(ProjectsDTO project, Users principalUser) {
         Projects newProject = new Projects();
         newProject.setUserId(principalUser);
         newProject.setTitle(project.getTitle());
@@ -68,21 +93,29 @@ public class Users {
         projects.remove(project);
     }
 
-    public void updateProject(Projects updatedProject, Users principalUser, Projects projectContents) {
+    public void updateProject(Projects updatedProject, Users principalUser, ProjectsDTO projectContents) {
         updatedProject.setUserId(principalUser);
         updatedProject.setTitle(projectContents.getTitle());
         updatedProject.setDescription(projectContents.getDescription());
         updatedProject.setGithub_repo_url(projectContents.getGithub_repo_url());
     }
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "user_who_commented")
     private Set<ProjectComments> comments;
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "bug_report")
     private Set<BugReports> reports;
 
-    @OneToMany(mappedBy = "userId")
+    public void addBugReport(Users principalUser, BugReportsDTO bugReport) {
+        BugReports newBugReport = new BugReports();
+        newBugReport.setUserId(principalUser);
+        newBugReport.setDescription(bugReport.getDescription());
+        newBugReport.setStatus(bugReport.getStatus());
+        reports.add(newBugReport);
+    }
+
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DeveloperBlogComments> blogComments;
 }
