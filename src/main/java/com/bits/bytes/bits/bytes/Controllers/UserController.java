@@ -1,7 +1,7 @@
 package com.bits.bytes.bits.bytes.Controllers;
 import com.bits.bytes.bits.bytes.DTOs.BugReportsDTO;
 import com.bits.bytes.bits.bytes.Models.*;
-import com.bits.bytes.bits.bytes.Services.UserServices;
+import com.bits.bytes.bits.bytes.Services.Impl.UserServicesImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,26 +17,26 @@ public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    UserServices userServices;
-    UserController(UserServices userServices) {
-        this.userServices = userServices;
+    UserServicesImpl userServicesImpl;
+    UserController(UserServicesImpl userServicesImpl) {
+        this.userServicesImpl = userServicesImpl;
     }
 
     @GetMapping("/profile")
     public ResponseEntity<Profiles> userProfile(Principal principal) {
-        Users user = userServices.findUser(principal.getName());
+        Users user = userServicesImpl.findUser(principal.getName());
         logger.info("Successfully returned user profile");
         return new ResponseEntity<>(user.getProfile(), HttpStatus.OK);
     }
 
     @GetMapping("/projects")
     public ResponseEntity<Set<Projects>> userProjects(Principal principal) {
-        return new ResponseEntity<>(userServices.findUser(principal.getName()).getProjects(), HttpStatus.OK);
+        return new ResponseEntity<>(userServicesImpl.findUser(principal.getName()).getProjects(), HttpStatus.OK);
     }
 
     @PutMapping("/bugReports/add")
     public ResponseEntity<String> addBugReport(@RequestBody BugReportsDTO bugReport) {
-        userServices.addBugReport(bugReport);
+        userServicesImpl.addBugReport(bugReport);
         logger.info("Successfully added Bug Report");
         return new ResponseEntity<>("Bug Report Added Twin", HttpStatus.ACCEPTED);
     }
