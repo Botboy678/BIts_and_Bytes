@@ -34,6 +34,10 @@ public class Users {
     @JsonIgnore
     private String password_hash;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.USER;
+
     @CreationTimestamp
     private LocalDateTime registered_at;
 
@@ -62,6 +66,7 @@ public class Users {
         // and then populates my chosen POJO
         LeetCodeProfile leetCodeData = restTemplate.getForObject(url, LeetCodeProfile.class);
 
+        assert leetCodeData != null;
         profileToUpdate.setLeetcode_problems_solved(leetCodeData.getTotalSolved());
         profileToUpdate.setGithub_url(profile.getGithub_url());
         profileToUpdate.setProfile_photo_url(profile.getProfile_photo_url());
