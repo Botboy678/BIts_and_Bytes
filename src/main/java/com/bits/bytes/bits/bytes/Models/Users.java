@@ -30,7 +30,7 @@ public class Users {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column()
     @JsonIgnore
     private String password_hash;
 
