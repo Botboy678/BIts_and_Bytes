@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 
 @Service
 @Transactional
@@ -24,6 +26,9 @@ public class UserServicesImpl implements UserServices {
 
     @Autowired
     MyCurrentUser myCurrentUser;
+
+    @Autowired
+    FriendsRepo friendsRepo;
 
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -40,6 +45,8 @@ public class UserServicesImpl implements UserServices {
         user.setUsername(usersDTO.getUsername());
         user.setEmail(usersDTO.getEmail());
         user.setPassword_hash(encoder.encode(usersDTO.getPassword()));
+        user.setAbility_points(0);
+        user.setIs_online(true);
         userRepo.save(user);
     }
 
@@ -66,12 +73,12 @@ public class UserServicesImpl implements UserServices {
         userRepo.save(principalUser);
     }
 
-    //I'm adding the project comment based on the title and username of
-    //who owns that project, this is to avoid errors bc multiple users
-    //could have a project with the same name
-    //So when I'm doing the frontend I can pull the username attached to the project
-    //the user wants to comment on
-    //Like "Project 1" by "John doe" I pull "John doe" and tag it on to send here to backend
+   /* I'm adding the project comment based on the title and username of
+    who owns that project, this is to avoid errors bc multiple users
+    could have a project with the same name
+    So when I'm doing the frontend I can pull the username attached to the project
+    the user wants to comment on
+    Like "Project 1" by "John doe" I pull "John doe" and tag it on to send here to backend*/
     @Override
     public String addCommentToProject(String title, ProjectCommentsDTO comment, String projectOwner) {
         Users principalUser = myCurrentUser.getPrincipalUser();
@@ -137,4 +144,106 @@ public class UserServicesImpl implements UserServices {
         }
         userRepo.save(principalUser);
     }
+
+    @Override
+    public Set<String> allSentFriendRequest() {
+        return myCurrentUser.getPrincipalUser().getSentFriendRequests();
+    }
+
+    @Override
+    public String sendFriendRequest(FriendsDTO friendsDTO) {
+        // Create a new Friends relationship entity
+        Friends newFriendRequest = new Friends();
+
+        // Get the currently logged in user
+        Users principalUser = myCurrentUser.getPrincipalUser();
+        // Find the target friend user the current user is sending the request to
+        Users friendUser = userRepo.findByUsername(friendsDTO.getFriendUsername());
+
+        // Set up the composite key parts and initial status
+        newFriendRequest.setUserId(principalUser.getUserId());
+        newFriendRequest.setFriendUserId(friendUser.getUserId());
+        newFriendRequest.setStatus(friendsDTO.getStatus());
+
+        // Track request for both sides:
+        // add to sender’s "sent requests"
+        principalUser.getSentFriendRequests().add(friendsDTO.getFriendUsername());
+        // add to receiver’s "received requests"
+        friendUser.getReceivedFriendRequests().add(principalUser.getUsername());
+
+        // Save both users so their request lists update
+        userRepo.save(principalUser);
+        userRepo.save(friendUser);
+        // Save the friend request entry
+        friendsRepo.save(newFriendRequest);
+
+        return "Friend Request sent!";
+    }
+
+    // One at a time - I pull in the username the user is accepting/declining
+    @Override
+    public void acceptFriendRequest(String username) {
+        // Get current user
+        Users principalUser = myCurrentUser.getPrincipalUser();
+
+        // Get the other user from the request AKA user_id (the sender)
+        Users friendUser = null;
+        try {
+            friendUser = userRepo.findByUsername(username);
+            logger.info("friendUser was found!"); 
+        } catch (Exception e) {
+            logger.error("Could not find User by that name to add!");
+        }
+
+        // Find the friend request entry where current user is the receiver AKA the friend_user_id in this case
+        assert friendUser != null;
+        Friends friendRequest = friendsRepo
+                .findByFriendUserIdAndUserId(principalUser.getUserId(), friendUser.getUserId());
+
+        // Mark the request as accepted
+        friendRequest.setStatus(Friends.Status.ACCEPTED);
+        // Add each user to the other's established friends list
+        principalUser.getEstablishedFriends().add(friendUser.getUsername());
+        friendUser.getEstablishedFriends().add(principalUser.getUsername());
+
+        //After that remove sent friend request from sender
+        //and recieved friend request from reciever
+        principalUser.getReceivedFriendRequests().remove(friendUser.getUsername());
+        friendUser.getSentFriendRequests().remove(principalUser.getUsername());
+
+        // Save updated users
+        userRepo.save(principalUser);
+        userRepo.save(friendUser);
+        // Delete the original request record since it’s now resolved
+        friendsRepo.save(friendRequest);
+    }
+
+    @Override
+    public void declineFriendRequest(String username) {
+        // Get current user
+        Users principalUser = myCurrentUser.getPrincipalUser();
+
+        // Get the other user from the request AKA user_id (the sender)
+        Users friendUser = userRepo.findByUsername(username);
+
+        // Find the friend request entry where current user is the receiver AKA the friend_user_id in this case
+        Friends friendRequest = friendsRepo
+                .findByFriendUserIdAndUserId(principalUser.getUserId(), friendUser.getUserId());
+
+        // Mark the request as declined
+        friendRequest.setStatus(Friends.Status.DECLINED);
+
+        //remove sent friend request from sender
+        //and recieved friend request from reciever
+        principalUser.getReceivedFriendRequests().remove(friendUser.getUsername());
+        friendUser.getSentFriendRequests().remove(principalUser.getUsername());
+
+        // Save updated users
+        userRepo.save(principalUser);
+        userRepo.save(friendUser);
+        // Delete the original request record since it’s now resolved
+        friendsRepo.save(friendRequest);
+    }
+
+
 }

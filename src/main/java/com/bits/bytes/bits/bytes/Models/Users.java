@@ -13,6 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer user_id;
+    private Integer userId;
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -75,11 +76,14 @@ public class Users {
         principalUser.setProfile(profileToUpdate);
     }
 
-    @OneToMany(mappedBy = "userId")
-    private Set<Friends> SentFriendRequests;
+    @ElementCollection
+    private Set<String> sentFriendRequests = new HashSet<>();
 
-    @OneToMany(mappedBy = "friendUserId")
-    private Set<Friends> ReceivedFriendRequests;
+    @ElementCollection
+    private Set<String> receivedFriendRequests = new HashSet<>();
+
+    @ElementCollection
+    private Set<String> EstablishedFriends = new HashSet<>();
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference(value = "project")
