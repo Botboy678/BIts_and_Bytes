@@ -1,5 +1,6 @@
 package com.bits.bytes.bits.bytes.Models;
 import com.bits.bytes.bits.bytes.DTOs.BugReportsDTO;
+import com.bits.bytes.bits.bytes.DTOs.DeveloperBlogDTO;
 import com.bits.bytes.bits.bytes.DTOs.ProfilesDTO;
 import com.bits.bytes.bits.bytes.DTOs.ProjectsDTO;
 import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.LeetCodeProfile;
@@ -126,5 +127,22 @@ public class Users {
     }
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference(value = "developerBlogs")
+    private Set<DeveloperBlog> developerBlogs;
+
+    public void addDeveloperBlog(DeveloperBlogDTO developerBlogDTO, Users principalUser) {
+        DeveloperBlog developerBlog = new DeveloperBlog();
+        developerBlog.setAuthor(developerBlogDTO.getAuthor());
+        developerBlog.setUserId(principalUser);
+        developerBlog.setTitle(developerBlogDTO.getTitle());
+        developerBlog.setDescription(developerBlogDTO.getDescription());
+        developerBlogs.add(developerBlog);
+    }
+
+    public void deleteDeveloperBlog(DeveloperBlog developerBlog){developerBlogs.remove(developerBlog);}
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference(value = "developerBlogComment")
     private List<DeveloperBlogComments> blogComments;
+
 }

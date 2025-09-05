@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -29,6 +30,12 @@ public class UserServicesImpl implements UserServices {
 
     @Autowired
     FriendsRepo friendsRepo;
+
+    @Autowired
+    DeveloperBlogRepo developerBlogRepo;
+
+    @Autowired
+    DeveloperBlogCommentsRepo developerBlogCommentsRepo;
 
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -73,17 +80,24 @@ public class UserServicesImpl implements UserServices {
         userRepo.save(principalUser);
     }
 
-   /* I'm adding the project comment based on the title and username of
-    who owns that project, this is to avoid errors bc multiple users
-    could have a project with the same name
-    So when I'm doing the frontend I can pull the username attached to the project
-    the user wants to comment on
-    Like "Project 1" by "John doe" I pull "John doe" and tag it on to send here to backend*/
+    /*
+     * Adding a project comment requires both the project title
+     * and the username of the owner.
+     *
+     * Reason:
+     * - Multiple users can create projects with the same name.
+     * - To avoid conflicts, the username is attached to the project.
+     *
+     * Example:
+     * "Project 1" by "John Doe"
+     * -> Frontend tags "John Doe" and the "Project 1" to the comment request
+     * -> Backend uses this to find the correct project
+     */
     @Override
     public String addCommentToProject(String title, ProjectCommentsDTO comment, String projectOwner) {
         Users principalUser = myCurrentUser.getPrincipalUser();
 
-        // Find project directly by title + owner
+        // Find a project directly by title and owner
         Projects projectForComment = projectRepo
                 .findByTitleAndUserId_Username(title, projectOwner)
                 .orElse(null);
@@ -152,10 +166,10 @@ public class UserServicesImpl implements UserServices {
 
     @Override
     public String sendFriendRequest(FriendsDTO friendsDTO) {
-        // Create a new Friends relationship entity
+        // Create a new Friend's relationship entity
         Friends newFriendRequest = new Friends();
 
-        // Get the currently logged in user
+        // Get the currently logged-in user
         Users principalUser = myCurrentUser.getPrincipalUser();
         // Find the target friend user the current user is sending the request to
         Users friendUser = userRepo.findByUsername(friendsDTO.getFriendUsername());
@@ -195,7 +209,7 @@ public class UserServicesImpl implements UserServices {
             logger.error("Could not find User by that name to add!");
         }
 
-        // Find the friend request entry where current user is the receiver AKA the friend_user_id in this case
+        // Find the friend request entry where the current user is the receiver AKA the friend_user_id in this case
         assert friendUser != null;
         Friends friendRequest = friendsRepo
                 .findByFriendUserIdAndUserId(principalUser.getUserId(), friendUser.getUserId());
@@ -206,8 +220,8 @@ public class UserServicesImpl implements UserServices {
         principalUser.getEstablishedFriends().add(friendUser.getUsername());
         friendUser.getEstablishedFriends().add(principalUser.getUsername());
 
-        //After that remove sent friend request from sender
-        //and recieved friend request from reciever
+        //After that, remove sent friend request from sender
+        //and received friend request from receiver
         principalUser.getReceivedFriendRequests().remove(friendUser.getUsername());
         friendUser.getSentFriendRequests().remove(principalUser.getUsername());
 
@@ -226,7 +240,7 @@ public class UserServicesImpl implements UserServices {
         // Get the other user from the request AKA user_id (the sender)
         Users friendUser = userRepo.findByUsername(username);
 
-        // Find the friend request entry where current user is the receiver AKA the friend_user_id in this case
+        // Find the friend request entry where the current user is the receiver AKA the friend_user_id in this case
         Friends friendRequest = friendsRepo
                 .findByFriendUserIdAndUserId(principalUser.getUserId(), friendUser.getUserId());
 
@@ -234,7 +248,7 @@ public class UserServicesImpl implements UserServices {
         friendRequest.setStatus(Friends.Status.DECLINED);
 
         //remove sent friend request from sender
-        //and recieved friend request from reciever
+        //and received friend request from receiver
         principalUser.getReceivedFriendRequests().remove(friendUser.getUsername());
         friendUser.getSentFriendRequests().remove(principalUser.getUsername());
 
@@ -243,6 +257,85 @@ public class UserServicesImpl implements UserServices {
         userRepo.save(friendUser);
         // Delete the original request record since it’s now resolved
         friendsRepo.save(friendRequest);
+    }
+
+    @Override
+    public void addDeveloperBlog(DeveloperBlogDTO developerBlogDTO) {
+        Users principalUser = myCurrentUser.getPrincipalUser();
+        principalUser.addDeveloperBlog(developerBlogDTO, principalUser);
+        userRepo.save(principalUser);
+    }
+
+    @Override
+    public void deleteDeveloperBlog(String title) {
+        Users principalUser = myCurrentUser.getPrincipalUser();
+        DeveloperBlog blogToDelete = developerBlogRepo.findByTitleAndUserId(title, principalUser);
+        principalUser.deleteDeveloperBlog(blogToDelete);
+        userRepo.save(principalUser);
+    }
+
+    @Override
+    public String addDeveloperBlogComment(String title, String comment, String projectOwnerName) {
+        Users principalUser = myCurrentUser.getPrincipalUser();
+
+        // Find blog directly by title + owner
+        DeveloperBlog blogForComment = developerBlogRepo
+                .findByTitleAndUserId_Username(title, projectOwnerName)
+                .orElse(null);
+
+        if (blogForComment == null) {
+            logger.info("Could not find blog!");
+        }
+
+        // Create the comment
+        DeveloperBlogComments newComment = new DeveloperBlogComments();
+        assert blogForComment != null;
+        newComment.setBlogId(blogForComment);
+        newComment.setUser(principalUser);
+        newComment.setDescription(comment);
+//        principalUser.getBlogComments().add(newComment);
+
+        // Attach to blog
+        blogForComment.getBlogComments().add(newComment);
+
+        userRepo.save(principalUser);
+        return "Comment added Twin";
+    }
+
+    @Override
+    public String deleteDeveloperBlogComment(String title, DeveloperBlogCommentsDTO comment, String projectOwner) {
+        Users principalUser = myCurrentUser.getPrincipalUser();
+
+        // Find blog the comment is located in
+        DeveloperBlog blogCommentIsLocatedIn = developerBlogRepo
+                .findByTitleAndUserId_Username(title, projectOwner)
+                .orElse(null);
+
+        if (blogCommentIsLocatedIn == null) {
+            logger.info("The blog you're trying to delete a comment from doesn't exist!");
+        }
+        List<DeveloperBlogComments> commentSet = developerBlogCommentsRepo.findByDescriptionAndUser_Username(comment.getDescription(), principalUser.getUsername());
+
+        for(DeveloperBlogComments commentToDelete : commentSet) {
+            if(commentToDelete.getDescription().equals(comment.getDescription())) {
+                assert blogCommentIsLocatedIn != null;
+                blogCommentIsLocatedIn.getBlogComments().remove(commentToDelete);
+                principalUser.getBlogComments().remove(commentToDelete);
+                break;
+            }
+        }
+
+        assert blogCommentIsLocatedIn != null;
+        developerBlogRepo.save(blogCommentIsLocatedIn);
+        userRepo.save(principalUser);
+
+        return "Comment deleted Twin";
+    }
+
+    @Override
+    public Set<DeveloperBlog> getAllBlogs() {
+        Users principalUser = myCurrentUser.getPrincipalUser();
+        return principalUser.getDeveloperBlogs();
     }
 
 

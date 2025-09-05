@@ -2,7 +2,7 @@ package com.bits.bytes.bits.bytes.Services;
 
 
 import com.bits.bytes.bits.bytes.DTOs.*;
-import com.bits.bytes.bits.bytes.Models.Friends;
+import com.bits.bytes.bits.bytes.Models.DeveloperBlog;
 import com.bits.bytes.bits.bytes.Models.Users;
 
 import java.util.Set;
@@ -21,4 +21,9 @@ public interface UserServices {
      String sendFriendRequest(FriendsDTO friendsDTO);
      void acceptFriendRequest(String username);
      void declineFriendRequest(String username);
+     void addDeveloperBlog(DeveloperBlogDTO developerBlogDTO);
+     void deleteDeveloperBlog(String title);
+     String addDeveloperBlogComment(String title, String comment, String projectOwner);
+     String deleteDeveloperBlogComment(String title, DeveloperBlogCommentsDTO comment, String projectOwner);
+     Set<DeveloperBlog> getAllBlogs();
 }

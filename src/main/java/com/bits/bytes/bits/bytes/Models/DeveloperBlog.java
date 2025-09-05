@@ -1,4 +1,6 @@
 package com.bits.bytes.bits.bytes.Models;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +15,11 @@ public class DeveloperBlog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
 
+    @ManyToOne @JoinColumn(name = "user_id", nullable = false)
+    @JsonManagedReference(value = "developerBlogs")
+    @JsonIgnore
+    private Users userId;
+
     private String title;
 
     private String Description;
@@ -23,6 +30,8 @@ public class DeveloperBlog {
     @Column(columnDefinition = "varchar(255) default 'August'")
     private String author;
 
-    @OneToMany(mappedBy = "blogId")
+    @OneToMany(mappedBy = "blogId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "blogComments")
     private List<DeveloperBlogComments> blogComments;
+
 }
