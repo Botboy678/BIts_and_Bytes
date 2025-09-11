@@ -1,5 +1,7 @@
-package com.bits.bytes.bits.bytes.Models;
+package com.bits.bytes.bits.bytes.Models.MiscellaneousModels;
 
+import com.bits.bytes.bits.bytes.Models.Role;
+import com.bits.bytes.bits.bytes.Models.Users;
 import com.bits.bytes.bits.bytes.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -31,6 +33,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             newUser.setEmail(email);
             newUser.setUsername(name != null ? name : email);
             newUser.setRole(Role.USER);
+            newUser.setAbility_points(0);
+            newUser.setIs_online(true);
             userRepo.save(newUser);
         }
         return oAuth2User;

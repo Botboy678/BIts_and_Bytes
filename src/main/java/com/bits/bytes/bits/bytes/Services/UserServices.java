@@ -8,7 +8,7 @@ import com.bits.bytes.bits.bytes.Models.Users;
 import java.util.Set;
 
 public interface UserServices {
-     Users findUser(String username);
+     UsersDTO findUser(String username);
      void Register(UsersDTO usersDTO);
      void addUserProjects(ProjectsDTO project);
      void deleteUserProject(String title);

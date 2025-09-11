@@ -1,5 +1,6 @@
 package com.bits.bytes.bits.bytes.Services.Impl;
 import com.bits.bytes.bits.bytes.DTOs.*;
+import com.bits.bytes.bits.bytes.MapDTOs.MapDTOs;
 import com.bits.bytes.bits.bytes.Models.*;
 import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.MyCurrentUser;
 import com.bits.bytes.bits.bytes.Repo.*;
@@ -42,8 +43,8 @@ public class UserServicesImpl implements UserServices {
     private static final Logger logger = LoggerFactory.getLogger(UserServicesImpl.class);
 
     @Override
-    public Users findUser(String username) {
-        return userRepo.findByUsername(username);
+    public UsersDTO findUser(String username) {
+        return MapDTOs.mapToUsersDto(userRepo.findByUsername(username));
     }
 
     @Override
@@ -58,7 +59,7 @@ public class UserServicesImpl implements UserServices {
     }
 
     @Override
-    public void addUserProjects(ProjectsDTO project) {
+    public void addUserProjects(ProjectsDTO project)  {
         Users principalUser = myCurrentUser.getPrincipalUser();
         principalUser.addProject(project, principalUser);
         userRepo.save(principalUser);

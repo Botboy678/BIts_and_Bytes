@@ -1,10 +1,9 @@
 package com.bits.bytes.bits.bytes.Configs;
-import com.bits.bytes.bits.bytes.Models.CustomOAuth2UserService;
+import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.CustomOAuth2UserService;
 import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
