@@ -49,9 +49,10 @@ public class DeveloperController {
         return new ResponseEntity<>(userServicesImpl.deleteDeveloperBlogComment(title, comments, projectOwnerName), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/getAllUsersBlogs")
-    public Set<DeveloperBlogDTO> getAllUsersBlogs(){
-        return userServicesImpl.getAllBlogs();
+    @GetMapping("/getAllUsersDevBlogs")
+    @PreAuthorize("hasRole('DEVELOPER')")
+    public Set<DeveloperBlogDTO> getAllUsersDevBlogs(){
+        return userServicesImpl.getAllDevBlogs();
     }
 
 }

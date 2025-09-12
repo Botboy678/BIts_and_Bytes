@@ -24,8 +24,8 @@ public class BugReportsController {
     @PutMapping("/add")
     public ResponseEntity<String> addBugReport(@RequestBody BugReportsDTO bugReport) {
         userServicesImpl.addBugReport(bugReport);
-        logger.info("Successfully added Bug Report");
-        return new ResponseEntity<>("Bug Report Added Twin", HttpStatus.ACCEPTED);
+        logger.info("User added Bug Report");
+        return new ResponseEntity<>("Bug Report Added!", HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/allBugReports")

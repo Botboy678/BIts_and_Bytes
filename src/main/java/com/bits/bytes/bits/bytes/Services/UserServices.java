@@ -23,6 +23,6 @@ public interface UserServices {
      void deleteDeveloperBlog(String title);
      String addDeveloperBlogComment(String title, String comment, String projectOwner);
      String deleteDeveloperBlogComment(String title, DeveloperBlogCommentsDTO comment, String projectOwner);
-     Set<DeveloperBlogDTO> getAllBlogs();
+     Set<DeveloperBlogDTO> getAllDevBlogs();
      Set<BugReportsDTO> getAllBugReports();
 }
