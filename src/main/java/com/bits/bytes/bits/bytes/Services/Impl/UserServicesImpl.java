@@ -334,10 +334,15 @@ public class UserServicesImpl implements UserServices {
     }
 
     @Override
-    public Set<DeveloperBlog> getAllBlogs() {
+    public Set<DeveloperBlogDTO> getAllBlogs() {
         Users principalUser = myCurrentUser.getPrincipalUser();
-        return principalUser.getDeveloperBlogs();
+        return MapDTOs.mapToDeveloperBlogDto(principalUser.getDeveloperBlogs());
     }
 
+    @Override
+    public Set<BugReportsDTO> getAllBugReports() {
+        Users principalUser = myCurrentUser.getPrincipalUser();
+        return MapDTOs.mapToBugReportsDto(principalUser.getReports());
+    }
 
 }

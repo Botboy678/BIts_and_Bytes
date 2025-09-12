@@ -9,6 +9,6 @@ import java.util.Set;
 
 @Repository
 public interface BugReportsRepo extends JpaRepository<BugReports, Integer> {
-    void deleteAllByUserId(Users user);
-    Set<BugReports> findAllByUserId(Users user);
+    void deleteAllByUser(Users user);
+    Set<BugReports> findAllByUser(Users user);
 }

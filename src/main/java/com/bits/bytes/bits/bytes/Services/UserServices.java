@@ -2,8 +2,6 @@ package com.bits.bytes.bits.bytes.Services;
 
 
 import com.bits.bytes.bits.bytes.DTOs.*;
-import com.bits.bytes.bits.bytes.Models.DeveloperBlog;
-import com.bits.bytes.bits.bytes.Models.Users;
 
 import java.util.Set;
 
@@ -25,5 +23,6 @@ public interface UserServices {
      void deleteDeveloperBlog(String title);
      String addDeveloperBlogComment(String title, String comment, String projectOwner);
      String deleteDeveloperBlogComment(String title, DeveloperBlogCommentsDTO comment, String projectOwner);
-     Set<DeveloperBlog> getAllBlogs();
+     Set<DeveloperBlogDTO> getAllBlogs();
+     Set<BugReportsDTO> getAllBugReports();
 }

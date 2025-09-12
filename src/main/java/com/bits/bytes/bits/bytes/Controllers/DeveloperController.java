@@ -3,7 +3,6 @@ package com.bits.bytes.bits.bytes.Controllers;
 
 import com.bits.bytes.bits.bytes.DTOs.DeveloperBlogCommentsDTO;
 import com.bits.bytes.bits.bytes.DTOs.DeveloperBlogDTO;
-import com.bits.bytes.bits.bytes.Models.DeveloperBlog;
 import com.bits.bytes.bits.bytes.Services.Impl.UserServicesImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,8 +49,8 @@ public class DeveloperController {
         return new ResponseEntity<>(userServicesImpl.deleteDeveloperBlogComment(title, comments, projectOwnerName), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/allBlogs")
-    public Set<DeveloperBlog> getAllBlogs(){
+    @GetMapping("/getAllUsersBlogs")
+    public Set<DeveloperBlogDTO> getAllUsersBlogs(){
         return userServicesImpl.getAllBlogs();
     }
 

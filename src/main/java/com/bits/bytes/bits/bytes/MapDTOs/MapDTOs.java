@@ -1,11 +1,9 @@
 package com.bits.bytes.bits.bytes.MapDTOs;
 
-import com.bits.bytes.bits.bytes.DTOs.ProfilesDTO;
-import com.bits.bytes.bits.bytes.DTOs.ProjectCommentsDTO;
-import com.bits.bytes.bits.bytes.DTOs.ProjectsDTO;
-import com.bits.bytes.bits.bytes.DTOs.UsersDTO;
+import com.bits.bytes.bits.bytes.DTOs.*;
 import com.bits.bytes.bits.bytes.Models.*;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -73,4 +71,50 @@ public class MapDTOs {
                 .project(MapDTOs.mapToProjectDto(user.getProjects()))
                 .build();
     }
+
+    public static DeveloperBlogDTO mapToDeveloperBlogDto(DeveloperBlog blog) {
+        return DeveloperBlogDTO.builder()
+                .title(blog.getTitle())
+                .description(blog.getDescription())
+                .author(blog.getAuthor())
+                .blogComments(MapDTOs.mapToDeveloperBlogCommentsDto(blog.getBlogComments()))
+                .build();
+    }
+
+    public static Set<DeveloperBlogDTO> mapToDeveloperBlogDto(Set<DeveloperBlog> blog) {
+        return blog.stream()
+                .map(MapDTOs::mapToDeveloperBlogDto)
+                .collect(Collectors.toSet());
+    }
+
+    public static DeveloperBlogCommentsDTO mapToDeveloperBlogCommentsDto(DeveloperBlogComments comment) {
+        return DeveloperBlogCommentsDTO.builder()
+                .description(comment.getDescription())
+                .blogId(comment.getBlogId().getId())
+                .userId(comment.getUser().getUserId())
+                .build();
+    }
+
+    //Overloaded Method for the developer Comments DTO this returns a List
+    public static List<DeveloperBlogCommentsDTO> mapToDeveloperBlogCommentsDto(List<DeveloperBlogComments> comments) {
+        return comments.stream()
+                .map(MapDTOs::mapToDeveloperBlogCommentsDto)
+                .toList();
+    }
+
+    public static BugReportsDTO mapToBugReportsDto(BugReports bugReport) {
+        return BugReportsDTO.builder()
+                .userId(bugReport.getUser().getUserId())
+                .description(bugReport.getDescription())
+                .status(bugReport.getStatus())
+                .build();
+    }
+
+    public static Set<BugReportsDTO> mapToBugReportsDto(Set<BugReports> bugReports) {
+        return bugReports.stream()
+                .map(MapDTOs::mapToBugReportsDto)
+                .collect(Collectors.toSet());
+    }
+
+
 }

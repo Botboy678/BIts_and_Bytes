@@ -113,13 +113,13 @@ public class Users {
     @JsonManagedReference(value = "user_who_commented")
     private Set<ProjectComments> comments;
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "bug_report")
     private Set<BugReports> reports;
 
     public void addBugReport(Users principalUser, BugReportsDTO bugReport) {
         BugReports newBugReport = new BugReports();
-        newBugReport.setUserId(principalUser);
+        newBugReport.setUser(principalUser);
         newBugReport.setDescription(bugReport.getDescription());
         newBugReport.setStatus(bugReport.getStatus());
         reports.add(newBugReport);

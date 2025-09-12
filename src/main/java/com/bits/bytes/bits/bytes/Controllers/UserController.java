@@ -39,11 +39,4 @@ public class UserController {
         return new ResponseEntity<>(user.getProject(), HttpStatus.OK);
     }
 
-    @PutMapping("/bugReports/add")
-    public ResponseEntity<String> addBugReport(@RequestBody BugReportsDTO bugReport) {
-        userServicesImpl.addBugReport(bugReport);
-        logger.info("Successfully added Bug Report");
-        return new ResponseEntity<>("Bug Report Added Twin", HttpStatus.ACCEPTED);
-    }
-
 }

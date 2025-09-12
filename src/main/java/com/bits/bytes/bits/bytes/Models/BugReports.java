@@ -17,7 +17,7 @@ public class BugReports {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference(value = "bug_report")
-    private Users userId;
+    private Users user;
 
     @Column(nullable = false)
     private String description;

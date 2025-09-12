@@ -35,7 +35,7 @@ public class FriendController {
         return new ResponseEntity<>("Friend Request Declined!", HttpStatus.OK);
     }
 
-    @GetMapping("/allFriends")
+    @GetMapping("/allSentFriendRequest")
     public ResponseEntity<Set<String>> allFriends() {
         return new ResponseEntity<>(userServicesImpl.allSentFriendRequest(), HttpStatus.OK);
     }
