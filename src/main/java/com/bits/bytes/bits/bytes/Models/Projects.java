@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -33,6 +34,6 @@ public class Projects {
 
     @OneToMany(mappedBy = "projectId", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "comments")
-    private Set<ProjectComments> comments;
+    private Set<ProjectComments> comments = new HashSet<>();
 
 }

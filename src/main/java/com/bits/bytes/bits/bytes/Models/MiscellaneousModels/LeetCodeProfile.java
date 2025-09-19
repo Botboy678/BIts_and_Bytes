@@ -1,8 +1,9 @@
 package com.bits.bytes.bits.bytes.Models.MiscellaneousModels;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Builder;
 import lombok.Data;
 
-@Data @JsonIgnoreProperties(ignoreUnknown = true)
+@Data @JsonIgnoreProperties(ignoreUnknown = true) @Builder
 public class LeetCodeProfile {
     private int totalSolved;
     private int totalQuestions;

@@ -3,15 +3,16 @@ import com.bits.bytes.bits.bytes.DTOs.BugReportsDTO;
 import com.bits.bytes.bits.bytes.DTOs.DeveloperBlogDTO;
 import com.bits.bytes.bits.bytes.DTOs.ProfilesDTO;
 import com.bits.bytes.bits.bytes.DTOs.ProjectsDTO;
+import com.bits.bytes.bits.bytes.Factories;
 import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.LeetCodeProfile;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
@@ -56,25 +57,8 @@ public class Users {
     @JsonBackReference(value = "user-profile")
     private Profiles profile;
 
-    public void updateProfile(ProfilesDTO profile, Users principalUser) {
-        //Load User Profile or create a new one if null
-        Profiles profileToUpdate = principalUser.getProfile() == null ? new Profiles() : principalUser.getProfile();
-        profileToUpdate.setUser(principalUser);
-
-        String url = "https://leetcode-api-faisalshohag.vercel.app/" + profile.getLeetcode_username();
-        // RestTemplate used to make API calls
-        RestTemplate restTemplate = new RestTemplate();
-        // getForObject used to make a get request to my url
-        // and then populates my chosen POJO
-        LeetCodeProfile leetCodeData = restTemplate.getForObject(url, LeetCodeProfile.class);
-
-        assert leetCodeData != null;
-        profileToUpdate.setLeetcode_problems_solved(leetCodeData.getTotalSolved());
-        profileToUpdate.setGithub_url(profile.getGithub_url());
-        profileToUpdate.setProfile_photo_url(profile.getProfile_photo_url());
-        profileToUpdate.setLeetcode_username(profile.getLeetcode_username());
-        profileToUpdate.setLinkedin_url(profile.getLinkedin_url());
-        principalUser.setProfile(profileToUpdate);
+    public void updateProfile(Profiles profileToUpdate) {
+        this.setProfile(profileToUpdate);
     }
 
     @ElementCollection
@@ -88,10 +72,9 @@ public class Users {
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference(value = "project")
-    private Set<Projects> projects;
+    private Set<Projects> projects = new HashSet<>();
 
-    public void addProject(ProjectsDTO project, Users principalUser) {
-        Projects newProject = new Projects();
+    public void addProject(ProjectsDTO project, Users principalUser, Projects newProject) {
         newProject.setUserId(principalUser);
         newProject.setTitle(project.getTitle());
         newProject.setDescription(project.getDescription());

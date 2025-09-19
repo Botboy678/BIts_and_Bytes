@@ -1,7 +1,9 @@
 package com.bits.bytes.bits.bytes.Services.Impl;
 import com.bits.bytes.bits.bytes.DTOs.*;
+import com.bits.bytes.bits.bytes.Factories;
 import com.bits.bytes.bits.bytes.MapDTOs.MapDTOs;
 import com.bits.bytes.bits.bytes.Models.*;
+import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.LeetCodeProfile;
 import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.MyCurrentUser;
 import com.bits.bytes.bits.bytes.Repo.*;
 import com.bits.bytes.bits.bytes.Services.UserServices;
@@ -11,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -37,6 +41,12 @@ public class UserServicesImpl implements UserServices {
 
     @Autowired
     DeveloperBlogCommentsRepo developerBlogCommentsRepo;
+
+    @Autowired
+    RestTemplate restTemplate;
+
+    @Autowired
+    Factories myFactory;
 
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -73,8 +83,9 @@ public class UserServicesImpl implements UserServices {
     @Override
     public void addUserProjects(ProjectsDTO project)  {
         Users principalUser = myCurrentUser.getPrincipalUser();
+        Projects newProject = myFactory.ProjectFactory();
         try {
-            principalUser.addProject(project, principalUser);
+            principalUser.addProject(project, principalUser, newProject);
             userRepo.save(principalUser);
             logger.info("Successfully added project: {} for user: {}", project.getTitle(), principalUser.getUsername());
         } catch (Exception e) {
@@ -134,7 +145,7 @@ public class UserServicesImpl implements UserServices {
                 return "Could not find Project Twin";
             }
 
-            ProjectComments newComment = new ProjectComments();
+            ProjectComments newComment = myFactory.ProjectCommentsFactory();
             newComment.setProjectId(projectForComment);
             newComment.setUserId(principalUser);
             newComment.setContent(comment.getContent());
@@ -153,7 +164,24 @@ public class UserServicesImpl implements UserServices {
     public void updateUserProfile(ProfilesDTO profile) {
         Users principalUser = myCurrentUser.getPrincipalUser();
         try {
-            principalUser.updateProfile(profile, principalUser);
+            //Load User Profile or create a new one if null
+            Profiles profileToUpdate = principalUser.getProfile() == null ? myFactory.ProfilesFactory() : principalUser.getProfile();
+            profileToUpdate.setUser(principalUser);
+
+            String url = "https://leetcode-api-faisalshohag.vercel.app/" + profile.getLeetcode_username();
+
+            // RestTemplate used to make API calls
+            // getForObject used to make a get request to my url
+            // and then populates my chosen POJO
+            LeetCodeProfile leetCodeData = restTemplate.getForObject(url, LeetCodeProfile.class);
+
+            assert leetCodeData != null;
+            profileToUpdate.setLeetcode_problems_solved(leetCodeData.getTotalSolved());
+            profileToUpdate.setGithub_url(profile.getGithub_url());
+            profileToUpdate.setProfile_photo_url(profile.getProfile_photo_url());
+            profileToUpdate.setLeetcode_username(profile.getLeetcode_username());
+            profileToUpdate.setLinkedin_url(profile.getLinkedin_url());
+            principalUser.updateProfile(profileToUpdate);
             logger.info("Successfully updated profile for user {}", principalUser.getUsername());
         } catch (Exception e) {
             logger.error("Could not update profile for user: {}", principalUser.getUsername(), e);
