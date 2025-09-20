@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -193,13 +194,16 @@ public class UserServicesImpl implements UserServices {
     @Override
     public String deleteUser(String username) {
         Users principalUser = myCurrentUser.getPrincipalUser();
-        if(username.equals(principalUser.getUsername())) {
+        if(Objects.equals(username, principalUser.getUsername())) {
             try {
                 userRepo.delete(principalUser);
                 logger.info("Successfully deleted user: {}", username);
             } catch (Exception e) {
                 logger.error("Could not delete user: {}", username, e);
             }
+        }
+        else {
+            logger.error("The usernames do not match!");
         }
         return "Profile deleted Twin on Dih!";
     }
@@ -208,7 +212,11 @@ public class UserServicesImpl implements UserServices {
     public void addBugReport(BugReportsDTO bugReport) {
         Users principalUser = myCurrentUser.getPrincipalUser();
         try {
-            principalUser.addBugReport(principalUser, bugReport);
+            BugReports newBugReport = myFactory.BugReportsFactory();
+            newBugReport.setUser(principalUser);
+            newBugReport.setDescription(bugReport.getDescription());
+            newBugReport.setStatus(bugReport.getStatus());
+            principalUser.addBugReport(newBugReport);
             userRepo.save(principalUser);
             logger.info("Successfully added bug report for user: {}", principalUser.getUsername());
         } catch (Exception e) {

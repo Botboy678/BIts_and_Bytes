@@ -1,18 +1,12 @@
 package com.bits.bytes.bits.bytes.Service;
 
 
-import com.bits.bytes.bits.bytes.DTOs.ProfilesDTO;
-import com.bits.bytes.bits.bytes.DTOs.ProjectCommentsDTO;
-import com.bits.bytes.bits.bytes.DTOs.ProjectsDTO;
-import com.bits.bytes.bits.bytes.DTOs.UsersDTO;
+import com.bits.bytes.bits.bytes.DTOs.*;
 import com.bits.bytes.bits.bytes.Factories;
 import com.bits.bytes.bits.bytes.MapDTOs.MapDTOs;
+import com.bits.bytes.bits.bytes.Models.*;
 import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.LeetCodeProfile;
 import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.MyCurrentUser;
-import com.bits.bytes.bits.bytes.Models.Profiles;
-import com.bits.bytes.bits.bytes.Models.ProjectComments;
-import com.bits.bytes.bits.bytes.Models.Projects;
-import com.bits.bytes.bits.bytes.Models.Users;
 import com.bits.bytes.bits.bytes.Repo.ProjectRepo;
 import com.bits.bytes.bits.bytes.Repo.UserRepo;
 import com.bits.bytes.bits.bytes.Services.Impl.UserServicesImpl;
@@ -30,8 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -71,6 +64,8 @@ public class UserServicesImplTests {
     private ProfilesDTO testprofilesDTO;
     private Profiles testProfile;
     private LeetCodeProfile leetCodeData;
+    private BugReportsDTO bugReportsDTO;
+    private BugReports bugReports;
 
     @BeforeEach
     void setup() {
@@ -157,6 +152,12 @@ public class UserServicesImplTests {
                 .reputation(1500)
                 .build();
 
+        bugReportsDTO = BugReportsDTO.builder()
+                .description(faker.rickAndMorty().quote())
+                .build();
+
+        bugReports = new BugReports();
+        bugReports.setDescription(faker.rickAndMorty().quote());
     }
 
     @Test
@@ -258,6 +259,22 @@ public class UserServicesImplTests {
 
     }
 
-    
+    @Test
+    public void UserServices_deleteUser_ReturnDeletedUser(){
+        when(myCurrentUser.getPrincipalUser()).thenReturn(testUser2);
+        userServicesImpl.deleteUser(testUser2.getUsername());
+    }
+
+    @Test
+    public void UserServices_addBugReport_ReturnAddedBugReport(){
+        when(userRepo.save(Mockito.any(Users.class))).thenReturn(testUser2);
+        when(myCurrentUser.getPrincipalUser()).thenReturn(testUser2);
+        when(myFactory.BugReportsFactory()).thenReturn(bugReports);
+
+        userServicesImpl.addBugReport(bugReportsDTO);
+
+        assertEquals(1, testUser2.getReports().size());
+    }
+
 
 }

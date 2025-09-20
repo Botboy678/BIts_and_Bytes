@@ -1,10 +1,7 @@
 package com.bits.bytes.bits.bytes.Models;
 import com.bits.bytes.bits.bytes.DTOs.BugReportsDTO;
 import com.bits.bytes.bits.bytes.DTOs.DeveloperBlogDTO;
-import com.bits.bytes.bits.bytes.DTOs.ProfilesDTO;
 import com.bits.bytes.bits.bytes.DTOs.ProjectsDTO;
-import com.bits.bytes.bits.bytes.Factories;
-import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.LeetCodeProfile;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -12,8 +9,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -99,13 +94,9 @@ public class Users {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "bug_report")
-    private Set<BugReports> reports;
+    private Set<BugReports> reports = new HashSet<>();
 
-    public void addBugReport(Users principalUser, BugReportsDTO bugReport) {
-        BugReports newBugReport = new BugReports();
-        newBugReport.setUser(principalUser);
-        newBugReport.setDescription(bugReport.getDescription());
-        newBugReport.setStatus(bugReport.getStatus());
+    public void addBugReport(BugReports newBugReport) {
         reports.add(newBugReport);
     }
 
