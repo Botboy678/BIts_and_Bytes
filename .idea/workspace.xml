@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="00cfb506-f096-4477-a98f-ec175790543a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/public/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/public/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/public/logo192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/public/logo512.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/public/manifest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/public/robots.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/App.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/logo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/reportWebVitals.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/setupTests.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitattributes" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/backend/mvnw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/backend/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Configs/SecurityConfigs.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Configs/SecurityConfigs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Controllers/BugReportsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Controllers/BugReportsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Controllers/DeveloperController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Controllers/DeveloperController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Controllers/FriendController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Controllers/FriendController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Controllers/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Controllers/ProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Controllers/ProfileController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Controllers/ProjectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Controllers/ProjectController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Controllers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/DTOs/BugReportsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/DTOs/BugReportsDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/DTOs/DeveloperBlogCommentsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/DTOs/DeveloperBlogCommentsDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/DTOs/DeveloperBlogDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/DTOs/DeveloperBlogDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/DTOs/FriendsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/DTOs/FriendsDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/DTOs/ProfilesDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/DTOs/ProfilesDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/DTOs/ProjectCommentsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/DTOs/ProjectCommentsDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/DTOs/ProjectsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/DTOs/ProjectsDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/DTOs/UsersDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/DTOs/UsersDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Factories.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Factories.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/MainApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/MapDTOs/MapDTOs.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/MapDTOs/MapDTOs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/BugReports.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/BugReports.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/DeveloperBlog.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/DeveloperBlog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/DeveloperBlogComments.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/DeveloperBlogComments.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/Friends.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/Friends.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/MiscellaneousModels/CustomOAuth2UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/MiscellaneousModels/CustomOAuth2UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/MiscellaneousModels/FriendsId.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/MiscellaneousModels/FriendsId.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/MiscellaneousModels/LeetCodeProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/MiscellaneousModels/LeetCodeProfile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/MiscellaneousModels/MyCurrentUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/MiscellaneousModels/MyCurrentUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/MiscellaneousModels/MyUserDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/MiscellaneousModels/MyUserDetailsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/MiscellaneousModels/UserPrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/MiscellaneousModels/UserPrincipal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/Permissions.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/Permissions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/Profiles.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/Profiles.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/ProjectComments.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/ProjectComments.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/Projects.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/Projects.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Models/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Models/Users.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Repo/BugReportsRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Repo/BugReportsRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Repo/DeveloperBlogCommentsRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Repo/DeveloperBlogCommentsRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Repo/DeveloperBlogRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Repo/DeveloperBlogRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Repo/FriendsRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Repo/FriendsRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Repo/ProfilesRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Repo/ProfilesRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Repo/ProjectCommentsRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Repo/ProjectCommentsRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Repo/ProjectRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Repo/ProjectRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Repo/UserRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Repo/UserRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Services/Impl/UserServicesImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Services/Impl/UserServicesImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bits/bytes/bits/bytes/Services/UserServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/bits/bytes/bits/bytes/Services/UserServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/bits/bytes/bits/bytes/MainApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/com/bits/bytes/bits/bytes/MainApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/bits/bytes/bits/bytes/Service/UserServicesImplTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/com/bits/bytes/bits/bytes/Service/UserServicesImplTests.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="31Ihl7QNR5bXJ5V7YHhMRN9dp8J" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.MainApplication.executor": "Run",
+    "Application.Unnamed.executor": "Run",
+    "Application.bits&bytes.executor": "Run",
+    "Application.com.bits.bytes.bits.bytes.MainApplication.executor": "Run",
+    "JUnit.UserServicesImplTests.UserServices_Register_ReturnSavedUser.executor": "Run",
+    "JUnit.UserServicesImplTests.UserServices_Register_ReturnSuccess.executor": "Run",
+    "JUnit.UserServicesImplTests.UserServices_addBugReport_ReturnAddedBugReport.executor": "Run",
+    "JUnit.UserServicesImplTests.UserServices_addCommentToProject_ReturnAddedCommentToProject.executor": "Run",
+    "JUnit.UserServicesImplTests.UserServices_addUserProjects.executor": "Run",
+    "JUnit.UserServicesImplTests.UserServices_deleteUserProject.executor": "Run",
+    "JUnit.UserServicesImplTests.UserServices_deleteUser_ReturnDeletedUser.executor": "Run",
+    "JUnit.UserServicesImplTests.UserServices_findUser_ReturnUser.executor": "Run",
+    "JUnit.UserServicesImplTests.UserServices_updateUserProfile_ReturnUpdatedUserProfile.executor": "Run",
+    "JUnit.UserServicesImplTests.UserServices_updateUserProjects.executor": "Run",
+    "JUnit.UserServicesImplTests.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "last_opened_file_path": "C:/Users/emman/Desktop/bits&bytes/bits-bytes",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.bits.bytes.bits.bytes.DTOs" />
+      <recent name="com.bits.bytes.bits.bytes.Models" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.bits.bytes.bits.bytes.Repo" />
+      <recent name="com.bits.bytes.bits.bytes.Controllers" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.UserServicesImplTests">
+    <configuration name="bits&amp;bytes" type="Application" factoryName="Application">
+      <envs>
+        <env name="DB_PASS" value="Cellmembrane1" />
+        <env name="DB_URL" value="jdbc:mysql://localhost:3306/localbits&amp;bytes?useSSL=false&amp;serverTimezone=UTC" />
+        <env name="DB_USERNAME" value="root" />
+        <env name="GOOGLE_CLIENT_ID" value="56515297598-n74loaog7d5a0hlaan8tsaugg52mceqe.apps.googleusercontent.com" />
+        <env name="GOOGLE_CLIENT_SECRET" value="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" />
+        <env name="GOOGLE_REDIRECT_URI" value="http://localhost:8080/login/oauth2/code/google" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="com.bits.bytes.bits.bytes.MainApplication" />
+      <module name="bits-bytes" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServicesImplTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bits-bytes" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bits.bytes.bits.bytes.Service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bits.bytes.bits.bytes.Service" />
+      <option name="MAIN_CLASS_NAME" value="com.bits.bytes.bits.bytes.Service.UserServicesImplTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServicesImplTests.UserServices_addBugReport_ReturnAddedBugReport" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bits-bytes" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bits.bytes.bits.bytes.Service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bits.bytes.bits.bytes.Service" />
+      <option name="MAIN_CLASS_NAME" value="com.bits.bytes.bits.bytes.Service.UserServicesImplTests" />
+      <option name="METHOD_NAME" value="UserServices_addBugReport_ReturnAddedBugReport" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServicesImplTests.UserServices_addCommentToProject_ReturnAddedCommentToProject" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bits-bytes" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bits.bytes.bits.bytes.Service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bits.bytes.bits.bytes.Service" />
+      <option name="MAIN_CLASS_NAME" value="com.bits.bytes.bits.bytes.Service.UserServicesImplTests" />
+      <option name="METHOD_NAME" value="UserServices_addCommentToProject_ReturnAddedCommentToProject" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServicesImplTests.UserServices_deleteUser_ReturnDeletedUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bits-bytes" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bits.bytes.bits.bytes.Service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bits.bytes.bits.bytes.Service" />
+      <option name="MAIN_CLASS_NAME" value="com.bits.bytes.bits.bytes.Service.UserServicesImplTests" />
+      <option name="METHOD_NAME" value="UserServices_deleteUser_ReturnDeletedUser" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServicesImplTests.UserServices_updateUserProfile_ReturnUpdatedUserProfile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bits-bytes" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bits.bytes.bits.bytes.Service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bits.bytes.bits.bytes.Service" />
+      <option name="MAIN_CLASS_NAME" value="com.bits.bytes.bits.bytes.Service.UserServicesImplTests" />
+      <option name="METHOD_NAME" value="UserServices_updateUserProfile_ReturnUpdatedUserProfile" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.UserServicesImplTests" />
+        <item itemvalue="JUnit.UserServicesImplTests.UserServices_addBugReport_ReturnAddedBugReport" />
+        <item itemvalue="JUnit.UserServicesImplTests.UserServices_deleteUser_ReturnDeletedUser" />
+        <item itemvalue="JUnit.UserServicesImplTests.UserServices_updateUserProfile_ReturnUpdatedUserProfile" />
+        <item itemvalue="JUnit.UserServicesImplTests.UserServices_addCommentToProject_ReturnAddedCommentToProject" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="00cfb506-f096-4477-a98f-ec175790543a" name="Changes" comment="" />
+      <created>1755217641785</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1755217641785</updated>
+    </task>
+    <servers />
+  </component>
+</project>
