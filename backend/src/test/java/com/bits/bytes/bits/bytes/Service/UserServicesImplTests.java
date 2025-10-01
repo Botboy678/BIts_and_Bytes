@@ -275,6 +275,4 @@ public class UserServicesImplTests {
 
         assertEquals(1, testUser2.getReports().size());
     }
-
-
 }
