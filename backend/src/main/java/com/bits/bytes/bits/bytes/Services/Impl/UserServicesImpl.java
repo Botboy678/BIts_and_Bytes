@@ -10,7 +10,6 @@ import com.bits.bytes.bits.bytes.Services.UserServices;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -24,32 +23,30 @@ import java.util.Set;
 @Service
 @Transactional
 public class UserServicesImpl implements UserServices {
+    private final UserRepo userRepo;
+    private final ProjectRepo projectRepo;
+    private final MyCurrentUser myCurrentUser;
+    private final FriendsRepo friendsRepo;
+    private final DeveloperBlogRepo developerBlogRepo;
+    private final DeveloperBlogCommentsRepo developerBlogCommentsRepo;
+    private final RestTemplate restTemplate;
+    private final Factories myFactory;
+    private final BCryptPasswordEncoder encoder;
 
-    @Autowired
-    UserRepo userRepo;
-
-    @Autowired
-    ProjectRepo projectRepo;
-
-    @Autowired
-    MyCurrentUser myCurrentUser;
-
-    @Autowired
-    FriendsRepo friendsRepo;
-
-    @Autowired
-    DeveloperBlogRepo developerBlogRepo;
-
-    @Autowired
-    DeveloperBlogCommentsRepo developerBlogCommentsRepo;
-
-    @Autowired
-    RestTemplate restTemplate;
-
-    @Autowired
-    Factories myFactory;
-
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    public UserServicesImpl(DeveloperBlogCommentsRepo developerBlogCommentsRepo,
+                            DeveloperBlogRepo developerBlogRepo, BCryptPasswordEncoder encoder,
+                            FriendsRepo friendsRepo, MyCurrentUser myCurrentUser, Factories myFactory,
+                            ProjectRepo projectRepo, RestTemplate restTemplate, UserRepo userRepo) {
+        this.developerBlogCommentsRepo = developerBlogCommentsRepo;
+        this.developerBlogRepo = developerBlogRepo;
+        this.encoder = encoder;
+        this.friendsRepo = friendsRepo;
+        this.myCurrentUser = myCurrentUser;
+        this.myFactory = myFactory;
+        this.projectRepo = projectRepo;
+        this.restTemplate = restTemplate;
+        this.userRepo = userRepo;
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(UserServicesImpl.class);
 
