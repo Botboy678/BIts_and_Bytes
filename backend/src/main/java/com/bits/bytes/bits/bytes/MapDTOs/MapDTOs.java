@@ -13,7 +13,7 @@ public class MapDTOs {
         if (profile == null)
             return ProfilesDTO.builder()
                 .github_url("No url")
-                .profile_photo_url("No Photo Url")
+                .profile_photo_url_id("No Photo Url")
                 .linkedin_url("No LinkedinUrl")
                 .leetcode_problems_solved(0)
                 .leetcode_username("No username")
@@ -21,7 +21,7 @@ public class MapDTOs {
 
         return ProfilesDTO.builder()
                 .github_url(profile.getGithub_url())
-                .profile_photo_url(profile.getProfile_photo_url())
+                .profile_photo_url_id(profile.getProfile_photo_url_id())
                 .linkedin_url(profile.getLinkedin_url())
                 .leetcode_problems_solved(profile.getLeetcode_problems_solved())
                 .leetcode_username(profile.getLeetcode_username())

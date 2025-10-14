@@ -1,6 +1,7 @@
 package com.bits.bytes.bits.bytes.Service;
 
 
+import com.bits.bytes.bits.bytes.Configs.S3.S3Buckets;
 import com.bits.bytes.bits.bytes.DTOs.*;
 import com.bits.bytes.bits.bytes.Factories;
 import com.bits.bytes.bits.bytes.MapDTOs.MapDTOs;
@@ -10,6 +11,7 @@ import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.MyCurrentUser;
 import com.bits.bytes.bits.bytes.Repo.ProjectRepo;
 import com.bits.bytes.bits.bytes.Repo.UserRepo;
 import com.bits.bytes.bits.bytes.Services.Impl.UserServicesImpl;
+import com.bits.bytes.bits.bytes.Services.S3Service;
 import com.github.javafaker.Faker;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,17 +19,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -50,6 +54,13 @@ public class UserServicesImplTests {
 
     @Mock
     RestTemplate restTemplate;
+
+    @Mock
+    S3Service s3Service;
+
+    @Mock
+    S3Buckets s3Buckets;
+
     // Injecting the service layer, I want to test
     @InjectMocks
     private UserServicesImpl userServicesImpl;
@@ -66,6 +77,7 @@ public class UserServicesImplTests {
     private LeetCodeProfile leetCodeData;
     private BugReportsDTO bugReportsDTO;
     private BugReports bugReports;
+    private MultipartFile mockFile;
 
     @BeforeEach
     void setup() {
@@ -92,7 +104,7 @@ public class UserServicesImplTests {
             usersList.add(u);
 
             Profiles profile = new Profiles();
-            profile.setProfile_photo_url(url);
+            profile.setProfile_photo_url_id(url);
             profile.setGithub_url(url);
             profilesList.add(profile);
         }
@@ -134,7 +146,7 @@ public class UserServicesImplTests {
 
         testprofilesDTO = ProfilesDTO.builder()
                 .github_url(faker.internet().url())
-                .profile_photo_url(faker.internet().url())
+                .profile_photo_url_id(UUID.randomUUID().toString())
                 .leetcode_username(faker.rickAndMorty().character())
                 .build();
 
@@ -158,11 +170,17 @@ public class UserServicesImplTests {
 
         bugReports = new BugReports();
         bugReports.setDescription(faker.rickAndMorty().quote());
+        mockFile = new MockMultipartFile(
+                "file",
+                "photo.png",
+                "image/png",
+                "fake-image-data".getBytes()
+        );
     }
 
     @Test
     public void UserServices_Register_ReturnRegisteredUser() {
-        when(userRepo.save(Mockito.any(Users.class))).thenReturn(testUser);
+        when(userRepo.save(any(Users.class))).thenReturn(testUser);
         userServicesImpl.Register(testUserDto);
         assertEquals(testUser.getPassword_hash(), encoder.encode(testUserDto.getPassword()));
     }
@@ -183,7 +201,7 @@ public class UserServicesImplTests {
 
     @Test
     public void UserServices_addUserProjects_ReturnRecentlyUserProject(){
-        when(userRepo.save(Mockito.any(Users.class))).thenReturn(testUser);
+        when(userRepo.save(any(Users.class))).thenReturn(testUser);
         when(myCurrentUser.getPrincipalUser()).thenReturn(testUser);
         when(myFactory.ProjectFactory()).thenReturn(testProject);
 
@@ -206,7 +224,7 @@ public class UserServicesImplTests {
 
     @Test
     public void UserServices_updateUserProjects_ReturnUpdatedProject(){
-        when(userRepo.save(Mockito.any(Users.class))).thenReturn(testUser);
+        when(userRepo.save(any(Users.class))).thenReturn(testUser);
         when(myCurrentUser.getPrincipalUser()).thenReturn(testUser);
         when(projectRepo.findByTitleAndUserId(testProject.getTitle(), testUser)).thenReturn(testProject);
 
@@ -219,7 +237,7 @@ public class UserServicesImplTests {
 
     @Test
     public void UserServices_addCommentToProject_ReturnAddedCommentToProject(){
-        when(userRepo.save(Mockito.any(Users.class))).thenReturn(testUser2);
+        when(userRepo.save(any(Users.class))).thenReturn(testUser2);
         when(myCurrentUser.getPrincipalUser()).thenReturn(testUser2);
         when(projectRepo.findByTitleAndUserId_Username(testProject.getTitle(), testUser.getUsername())).thenReturn(Optional.ofNullable(testProject));
         when(myFactory.ProjectCommentsFactory()).thenReturn(testProjectComment);
@@ -235,20 +253,27 @@ public class UserServicesImplTests {
 
     @Test
     public void UserServices_updateUserProfile_ReturnUpdatedUserProfile(){
-        when(userRepo.save(Mockito.any(Users.class))).thenReturn(testUser2);
+        when(userRepo.save(any(Users.class))).thenReturn(testUser2);
         when(myCurrentUser.getPrincipalUser()).thenReturn(testUser2);
         when(myFactory.ProfilesFactory()).thenReturn(testProfile);
         when(restTemplate.getForObject(anyString(), eq(LeetCodeProfile.class)))
                 .thenReturn(leetCodeData);
-        userServicesImpl.updateUserProfile(testprofilesDTO);
+        doNothing().when(s3Service).putObject(anyString(), anyString(), any(byte[].class));
+        when(s3Buckets.getProfileBucket()).thenReturn("test-bucket");
+        userServicesImpl.updateUserProfile(testprofilesDTO, mockFile);
 
         // Assert
         Profiles updatedProfile = testUser2.getProfile();
         assertNotNull(updatedProfile);
+        verify(s3Service, times(1)).putObject(
+                eq("test-bucket"),
+                contains("profile-photos"),
+                any(byte[].class)
+        );
 
         // Fields from testprofilesDTO
         assertEquals(testprofilesDTO.getGithub_url(), updatedProfile.getGithub_url());
-        assertEquals(testprofilesDTO.getProfile_photo_url(), updatedProfile.getProfile_photo_url());
+        assertNotNull(updatedProfile.getProfile_photo_url_id());
         assertEquals(testprofilesDTO.getLeetcode_username(), updatedProfile.getLeetcode_username());
 
         // Fields from leetCodeData
@@ -267,7 +292,7 @@ public class UserServicesImplTests {
 
     @Test
     public void UserServices_addBugReport_ReturnAddedBugReport(){
-        when(userRepo.save(Mockito.any(Users.class))).thenReturn(testUser2);
+        when(userRepo.save(any(Users.class))).thenReturn(testUser2);
         when(myCurrentUser.getPrincipalUser()).thenReturn(testUser2);
         when(myFactory.BugReportsFactory()).thenReturn(bugReports);
 

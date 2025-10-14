@@ -5,8 +5,10 @@ import com.bits.bytes.bits.bytes.Services.Impl.UserServicesImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/profile")
@@ -19,12 +21,15 @@ public class ProfileController {
         this.userServicesImpl = userServicesImpl;
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<String> updateProfile(@RequestBody ProfilesDTO profile) {
-        userServicesImpl.updateUserProfile(profile);
+    @PostMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> updateProfile(
+            @RequestPart("profile") ProfilesDTO profile,
+            @RequestPart("file") MultipartFile file) {
+        userServicesImpl.updateUserProfile(profile, file);
         logger.info("Successfully updated user profile!");
-        return new ResponseEntity<>("Profile Updated Twin", HttpStatus.ACCEPTED);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Profile Updated Twin");
     }
+
 
     @RequestMapping(value = "/delete/{username}", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteUser(@PathVariable String username) {

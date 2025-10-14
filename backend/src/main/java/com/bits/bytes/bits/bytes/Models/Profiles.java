@@ -18,12 +18,14 @@ public class Profiles {
     private Users user;
 
 
-    private String profile_photo_url;
+    private String profile_photo_url_id;
     private String github_url;
     private String leetcode_username;
     private String linkedin_url;
 
     @Column(columnDefinition = "integer default 0")
     private Integer leetcode_problems_solved;
+
+
 
 }

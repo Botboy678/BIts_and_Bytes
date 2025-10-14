@@ -1,4 +1,5 @@
 package com.bits.bytes.bits.bytes.Services.Impl;
+import com.bits.bytes.bits.bytes.Configs.S3.S3Buckets;
 import com.bits.bytes.bits.bytes.DTOs.*;
 import com.bits.bytes.bits.bytes.Factories;
 import com.bits.bytes.bits.bytes.MapDTOs.MapDTOs;
@@ -6,6 +7,7 @@ import com.bits.bytes.bits.bytes.Models.*;
 import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.LeetCodeProfile;
 import com.bits.bytes.bits.bytes.Models.MiscellaneousModels.MyCurrentUser;
 import com.bits.bytes.bits.bytes.Repo.*;
+import com.bits.bytes.bits.bytes.Services.S3Service;
 import com.bits.bytes.bits.bytes.Services.UserServices;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -13,11 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -32,11 +32,13 @@ public class UserServicesImpl implements UserServices {
     private final RestTemplate restTemplate;
     private final Factories myFactory;
     private final BCryptPasswordEncoder encoder;
+    private final S3Service s3Service;
+    private final S3Buckets s3Buckets;
 
     public UserServicesImpl(DeveloperBlogCommentsRepo developerBlogCommentsRepo,
                             DeveloperBlogRepo developerBlogRepo, BCryptPasswordEncoder encoder,
                             FriendsRepo friendsRepo, MyCurrentUser myCurrentUser, Factories myFactory,
-                            ProjectRepo projectRepo, RestTemplate restTemplate, UserRepo userRepo) {
+                            ProjectRepo projectRepo, RestTemplate restTemplate, UserRepo userRepo, S3Service s3Service, S3Buckets s3Buckets) {
         this.developerBlogCommentsRepo = developerBlogCommentsRepo;
         this.developerBlogRepo = developerBlogRepo;
         this.encoder = encoder;
@@ -46,6 +48,8 @@ public class UserServicesImpl implements UserServices {
         this.projectRepo = projectRepo;
         this.restTemplate = restTemplate;
         this.userRepo = userRepo;
+        this.s3Service = s3Service;
+        this.s3Buckets = s3Buckets;
     }
 
     private static final Logger logger = LoggerFactory.getLogger(UserServicesImpl.class);
@@ -159,7 +163,7 @@ public class UserServicesImpl implements UserServices {
     }
 
     @Override
-    public void updateUserProfile(ProfilesDTO profile) {
+    public void updateUserProfile(ProfilesDTO profile, MultipartFile file) {
         Users principalUser = myCurrentUser.getPrincipalUser();
         try {
             //Load User Profile or create a new one if null
@@ -176,7 +180,21 @@ public class UserServicesImpl implements UserServices {
             assert leetCodeData != null;
             profileToUpdate.setLeetcode_problems_solved(leetCodeData.getTotalSolved());
             profileToUpdate.setGithub_url(profile.getGithub_url());
-            profileToUpdate.setProfile_photo_url(profile.getProfile_photo_url());
+
+            //Generate Id for profile photo for bucket key
+            String profilePhotoImageId = UUID.randomUUID().toString();
+
+            //Store Profile Photo
+            profileToUpdate.setProfile_photo_url_id(profilePhotoImageId);
+
+            try {
+                s3Service.putObject(s3Buckets.getProfileBucket(),
+                                    "profile-photos/%s/%s".formatted(myCurrentUser.getPrincipalUser().getUserId(), profilePhotoImageId),
+                                   file.getBytes());
+            } catch (Exception e) {
+                logger.error("Failure in putting image into s3 bucket", e);
+            }
+
             profileToUpdate.setLeetcode_username(profile.getLeetcode_username());
             profileToUpdate.setLinkedin_url(profile.getLinkedin_url());
             principalUser.updateProfile(profileToUpdate);
