@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/friend")
+@RequestMapping("api/v1/friend")
 public class FriendController {
 
     private static final Logger logger =  LoggerFactory.getLogger(FriendController.class);

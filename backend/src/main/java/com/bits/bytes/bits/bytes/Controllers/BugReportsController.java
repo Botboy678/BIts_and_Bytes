@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/Bugreport")
+@RequestMapping("api/v1/Bugreport")
 public class BugReportsController {
 
     private static final Logger logger = LoggerFactory.getLogger(BugReportsController.class);
