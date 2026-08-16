@@ -1,5 +1,5 @@
 # BIts_and_Bytes
-A social portfolio platform where developers can showcase projects, connect with friends, write developer blogs, and manage profiles — secured with Spring Security, HTTP Basic auth, Google OAuth2 login, and role-based access control (RBAC). Built using SDLC principles
+A social portfolio platform API where developers can showcase projects, connect with friends, write developer blogs, and manage profiles — secured with Spring Security, HTTP Basic auth, Google OAuth2 login, and role-based access control (RBAC). Built using SDLC principles
 
 🔗 **Live app:** [Coming soon], but also you could just clone it lol
 
